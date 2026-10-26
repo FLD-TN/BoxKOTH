@@ -1,0 +1,31 @@
+name: ClanKoth
+version: '${version}'
+main: com.dex.boxkoth.ClanKothPlugin
+api-version: '1.21'
+description: Clan King-of-the-Hill events
+authors: [dex]
+depend: [BoxClans, PlaceholderAPI, DecentHolograms]
+
+commands:
+  koth:
+    description: KOTH schedule (players) and ClanKoth management (staff)
+    usage: /koth [time|help]
+    aliases: [clankoth]
+
+permissions:
+  clankoth.admin:
+    description: Zone management and reload, plus everything in clankoth.start
+    default: op
+    children:
+      clankoth.start: true
+  clankoth.start:
+    description: Start/stop sessions, view schedule, list and info
+    default: op
+    children:
+      clankoth.player: true
+  clankoth.player:
+    description: /koth and /koth time (view the KOTH schedule)
+    default: true
+  clankoth.bypass.clanlock:
+    description: Create / disband / leave / join clans, kick and invite while a KOTH runs (config.yml clan-lock)
+    default: false

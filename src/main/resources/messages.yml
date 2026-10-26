@@ -1,0 +1,175 @@
+# ClanKoth messages. Supports & colour codes and &#RRGGBB. An empty string disables a message.
+# Tokens in {braces} are filled by the plugin.
+
+prefix: '&8(<#33FD42>&lB<#44F651>&lo<#55EF60>&lx<#65E96F>&lP<#76E27E>&lv<#87DB8D>&lP&8) '
+
+# Unit words for human-readable times ({human}, {duration_human}, {remaining_human}, ...)
+unit-hour: 'giờ'
+unit-minute: 'phút'
+unit-second: 'giây'
+
+# --- Player commands: /koth and /koth time ---
+# {timezone}
+player-schedule-header:
+  - '&8&m                                        '
+  - '&6&lLỊCH <gradient:#FA912E:#EFF665>&lBang Hội Chiến</gradient>'
+# {zone} {time_left} {time_left_human}
+player-schedule-running:
+  - '&a● <gradient:#FA912E:#EFF665>&lBang Hội Chiến</gradient> &a&lĐANG DIỄN RA &7- còn &f{time_left_human}'
+# {zone} {next} {remaining} {remaining_human}
+player-schedule-entry:
+  - '&f● <gradient:#FA912E:#EFF665>&lBang Hội Chiến</gradient> &7lúc &a{next} &7(còn &f{remaining_human}&7)'
+player-schedule-empty:
+  - '&7Hiện chưa có lịch bang hội chiến nào.'
+player-schedule-footer:
+  - '&8&m                                        '
+
+# --- Commands ---
+no-permission: '&cBạn không có quyền.'
+player-only: '&cLệnh này chỉ dùng trong game.'
+# Shown to everyone (clankoth.player)
+usage-player:
+  - '&6&lClanKoth'
+  - '&f/koth &7hoặc &f/koth time &7- xem lịch bang hội chiến'
+# Additionally shown to clankoth.start
+usage:
+  - '&f/koth start <tên> [giây] &7- bắt đầu ngay (10-86400 giây)'
+  - '&f/koth stop <tên> [--no-rewards] &7- kết thúc'
+  - '&f/koth schedule &7- lịch bang hội chiến chi tiết'
+  - '&f/koth list &7- danh sách vùng'
+  - '&f/koth info <tên> &7- thông tin vùng'
+# Additionally shown to clankoth.admin
+usage-admin:
+  - '&f/koth pos1 &7| &f/koth pos2 &7- chọn 2 góc vùng'
+  - '&f/koth create <tên> &7- tạo vùng từ pos1/pos2'
+  - '&f/koth delete <tên> &7- xoá vùng'
+  - '&f/koth set <tên> radius <0-1000|default> &7- bán kính arena'
+  - '&f/koth set <tên> duration <10-86400|default> &7- thời lượng (giây)'
+  - '&f/koth holo <movehere|reset> <tên> &7- vị trí hologram'
+  - '&f/koth infoholo <movehere|reset> <tên> &7- vị trí hologram thông tin'
+  - '&f/koth reload &7- tải lại cấu hình và zones.yml'
+usage-create: '&cCách dùng: /koth create <tên>'
+usage-delete: '&cCách dùng: /koth delete <tên>'
+usage-info: '&cCách dùng: /koth info <tên>'
+usage-start: '&cCách dùng: /koth start <tên> [giây] &7(giây: số nguyên 10-86400)'
+usage-stop: '&cCách dùng: /koth stop <tên> [--no-rewards]'
+usage-holo: '&cCách dùng: /koth holo <movehere|reset> <tên>'
+usage-set: '&cCách dùng: /koth set <tên> radius <0-1000|default> &7hoặc &c/koth set <tên> duration <10-86400|default>'
+invalid-name: '&cTên vùng "{zone}" không hợp lệ. Chỉ dùng a-z, 0-9, _ (tối đa 32 ký tự).'
+pos-set: '&aĐã đặt pos{pos}: &f{world} {x}, {y}, {z}'
+pos-missing: '&cHãy đặt cả /koth pos1 và /koth pos2 trước.'
+pos-different-world: '&cpos1 và pos2 phải ở cùng một thế giới.'
+zone-exists: '&cVùng "{zone}" đã tồn tại.'
+zone-not-found: '&cKhông tìm thấy vùng "{zone}".'
+zone-created: '&aĐã tạo vùng &f{zone} &7({min} -> {max})'
+zone-deleted: '&aĐã xoá vùng &f{zone}&a.'
+zone-running: '&cVùng "{zone}" đang diễn ra KOTH, hãy dừng trước.'
+zones-locked: '&czones.yml đang lỗi cú pháp nên bị khoá. Sửa file rồi dùng /koth reload.'
+# {zone} {field} {value}
+set-done: '&aĐã đặt &f{field} &acủa &f{zone} &athành &f{value}&a.'
+set-reset: '&aĐã đưa &f{field} &acủa &f{zone} &avề mặc định (&f{value}&a).'
+set-next-session: '&7Thời lượng mới áp dụng từ phiên kế tiếp.'
+list-empty: '&7Chưa có vùng nào.'
+list-header: '&6Danh sách vùng ({count}):'
+list-entry:
+  - '&7- &f{zone} &7({world}) {state}'
+state-running: '&aĐANG DIỄN RA'
+state-idle: '&7chờ'
+hologram-default: '&7(mặc định)'
+info:
+  - '&6&lVùng {zone}'
+  - '&7Thế giới: &f{world}'
+  - '&7Min: &f{min} &7Max: &f{max}'
+  - '&7Bán kính arena: &f{radius}'
+  - '&7Thời lượng: &f{duration}'
+  - '&7Hologram: &f{hologram}'
+  - '&7Hologram thông tin: &f{info_hologram}'
+  - '&7Trạng thái: {state}'
+  - '&7Lần kế tiếp: &f{next}'
+schedule-disabled: '&7Scheduler đang tắt (scheduler.enabled: false).'
+schedule-empty: '&7Chưa có lịch nào.'
+schedule-header: '&6Lịch bang hội chiến &7(múi giờ {timezone}, hiện tại {now}):'
+# {zone} {days} {time} {next} {remaining}
+schedule-entry:
+  - '&7- &f{zone} &7{days} &f{time} &7→ &a{next} &7(còn {remaining})'
+session-started: '&aĐã bắt đầu <gradient:#FA912E:#EFF665>&lBang Hội Chiến</gradient>'
+session-already-running: '<gradient:#FA912E:#EFF665>&lBang Hội Chiến</gradient> đang diễn ra.'
+clans-incompatible: '&cPlugin Clans hiện tại không tương thích với ClanKoth. Xem console.'
+clans-not-ready: '&cClans chưa sẵn sàng (đang tải dữ liệu), thử lại sau.'
+world-not-loaded: '&cThế giới "{world}" chưa được tải.'
+session-stopped: '&aĐã kết thúc <gradient:#FA912E:#EFF665>&lBang Hội Chiến</gradient>.'
+session-stopped-no-rewards: '&aĐã kết thúc <gradient:#FA912E:#EFF665>&lBang Hội Chiến</gradient> &a(không phát thưởng).'
+session-not-running: '<gradient:#FA912E:#EFF665>&lBang Hội Chiến</gradient> không diễn ra.'
+holo-moved: '&aĐã chuyển hologram của &f{zone} &ađến vị trí của bạn.'
+holo-reset: '&aHologram của &f{zone} &ađã về vị trí mặc định.'
+holo-wrong-world: '&cBạn phải đứng trong thế giới "{world}".'
+reload-success: '&aĐã tải lại cấu hình và zones.yml.'
+reload-refused: '&cKhông thể reload khi đang có KOTH diễn ra.'
+reload-failed: '&cReload thất bại, giữ cấu hình cũ: &f{error}'
+
+# --- Start title (shown to everyone; timing in config.yml -> start-title) ---
+# {zone} {duration} {duration_human}
+title-start: '&8· <gradient:#FA912E:#EFF665>&lBANG HỘI CHIẾN</gradient> &8·'
+subtitle-start: '&fĐã bắt đầu tại &6trung tâm'
+
+# --- Broadcasts ---
+# {zone} {duration} {duration_human}
+broadcast-start: '<gradient:#FA912E:#EFF665>&lBang Hội Chiến</gradient> &fđã bắt đầu! &bThời gian: &b{duration_human}'
+# Reminder before a scheduled start (config.yml -> scheduler.reminder / announce-before-seconds).
+# {zone} {human} (e.g. "5 phút") {minutes} {seconds} {time} (mm:ss)
+schedule-announce: '&fSự kiện <gradient:#FA912E:#EFF665>&lBang Hội Chiến</gradient> &ftại &ckhu vực trung tâm bản đồ &fsẽ bắt đầu sau &c{human}&f!'
+broadcast-end-header: '<gradient:#FA912E:#EFF665>&lBang Hội Chiến</gradient> đã kết thúc! &fKết quả:'
+# Sent without prefix. {rank} {clan} {time}
+broadcast-end-line: '  &f#{rank} &f{clan} &7- &a{time}'
+broadcast-end-no-rewards: '&7(Trận này không phát thưởng)'
+broadcast-end-no-winner: '<gradient:#FA912E:#EFF665>&lBang Hội Chiến</gradient> &fđã kết thúc, không có clan nào chiếm được.'
+broadcast-cancelled: '<gradient:#FA912E:#EFF665>&lBang Hội Chiến</gradient> &cđã bị huỷ.'
+staff-session-error: '&c[Staff] KOTH {zone} gặp lỗi liên tục và đã bị dừng (không thưởng). Xem console.'
+
+# --- Phần thưởng ---
+# Mỗi người nhận 1 khối duy nhất: reward-header, 1 dòng cho mỗi phần quà nhận được, rồi reward-footer.
+# Không có prefix. Token: {rank} {zone} {clan} {clan_time} {player_time}
+# Để '' thì dòng quà đó không hiện; header/footer để [] thì bỏ.
+reward-header:
+  - '&8&m                                        '
+  - '<gradient:#FA912E:#EFF665>&lBANG HỘI CHIẾN</gradient> &8┃ &fPhần thưởng'
+  - '&7Bang &f{clan} &7xếp &6&lhạng {rank} &8· &7chiếm giữ &b{clan_time}'
+  - ''
+reward-leader: ' &6▸ &fQuà &6Trưởng Bang'
+# Phó Bang nhận thay quà Trưởng Bang khi Minh Chủ offline (rewards.yml -> vice-stands-in-for-leader)
+reward-leader-stand-in: ' &6- &fQuà &6Trưởng Bang &7(nhận thay Minh Chủ đang offline)'
+reward-mvp: ' &d▸ &fQuà &dMVP &8(&7bạn giữ vùng &b{player_time}&8)'
+reward-members: ' &a▸ &fQuà &aThành Viên'
+reward-footer:
+  - '&8&m                                        '
+
+# ===== MỚI =====
+# Màu hỗ trợ (cả trong config.yml: hologram, bossbar):
+#   &a &l ...                         mã thường
+#   &#FA912E  <#FA912E>  {#FA912E}    hex
+#   &x&F&A&9&1&2&f                    hex kiểu Spigot / EssentialsX
+#   <gradient:#FA912E:#EFF665>&lBang Hội Chiến</gradient>   gradient, 2 màu trở lên
+
+# Khi có bang hội MỚI chiếm vùng, gửi cho mọi người chơi.
+# config.yml -> controller-change-display: CHAT (dùng capture-chat) | ACTIONBAR (dùng capture-actionbar) | NONE
+# Không có prefix. {clan} {player} {zone}
+capture-chat: '&8(<#FA912E>&lB<#F99932>&la<#F8A136>&ln<#F7A83B>&lg <#F6B843>&lH<#F5C047>&lộ<#F4C74C>&li <#F2D754>&lC<#F2DF58>&lh<#F1E65D>&li<#F0EE61>&lế<#EFF665>&ln&8) &fBang hội &f{clan} &fđang chiếm giữ địa bàn tại khu vực &6trung tâm&f.'
+capture-actionbar: '&fBang hội &f{clan} &fđang chiếm giữ địa bàn tại khu vực &6trung tâm'
+
+# /koth infoholo (holo thông tin "chưa diễn ra / trận kế tiếp")
+usage-infoholo: '&cCách dùng: /koth infoholo <movehere|reset> <tên>'
+infoholo-moved: '&aĐã chuyển hologram thông tin của &f{zone} &ađến vị trí của bạn.'
+infoholo-reset: '&aHologram thông tin của &f{zone} &ađã về vị trí mặc định.'
+
+# ===== MỚI =====
+# Khoá bang hội khi KOTH đang diễn ra (config.yml -> clan-lock). Có prefix.
+# {action} = một dòng trong clan-lock-actions bên dưới. Để '' thì không gửi tin.
+clan-locked: '&cKhông thể {action} khi <gradient:#FA912E:#EFF665>&lBang Hội Chiến</gradient> &cđang diễn ra!'
+clan-lock-actions:
+  create: 'tạo bang'
+  disband: 'giải tán bang'
+  leave: 'rời bang'
+  join: 'vào bang'
+  kick: 'kick thành viên'
+  invite: 'mời người vào bang'
+  transfer: 'chuyển chủ bang'

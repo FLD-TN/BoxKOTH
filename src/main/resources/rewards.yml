@@ -1,0 +1,47 @@
+# ClanKoth rewards. Commands run as the CONSOLE.
+#
+# Targets per rank (1-5, any rank may be omitted):
+#   leader  - clan owner (Minh Chu) at the end of the session; if offline, the Pho Bang instead (see below)
+#   members - members online at the end who did NOT join the clan during the session
+#   mvp     - member with the most controller time for this clan
+# Rewards are online-only: a recipient who is offline when the session ends gets nothing (logged in console).
+#
+# Placeholders:
+#   %player%       recipient name
+#   %clan%         clan name, SANITISED (colours and symbols removed, only letters/digits/_/-)
+#   %clan_tag%     clan tag, SANITISED
+#   %clan_display% clan name WITH colours and symbols. Clan names are chosen by players: only use this in
+#                  broadcast-style commands where extra spaces/arguments cannot cause harm.
+#   %rank%         1..5
+#   %zone%         zone name
+#   %clan_time%    clan capture time (mm:ss)
+#   %player_time%  recipient's controller time for this clan (mm:ss)
+#
+# Inventory overflow is the command's responsibility (vanilla /give drops excess at the player's feet).
+
+# true: when a session ends with rewards, the clans ranked 1 / 2 / 3 get BoxClans clan points from the sources
+# koth-top1 / koth-top2 / koth-top3 (amounts are set in BoxClans points.yml), even if the leader is offline.
+clan-points: true
+
+# true: a player receives every reward they qualify for. false: only the first of leader, mvp, members.
+stack-rewards: true
+# true: if the Minh Chu is offline when the session ends, the Pho Bang receives the leader reward instead,
+# but only if the Pho Bang is online and did not join the clan during the session. Never both: the Minh Chu
+# is checked first and nothing is stored for later. false: an offline Minh Chu's leader reward is lost.
+vice-stands-in-for-leader: true
+# true: at most one account per IP receives the 'members' reward per session (anti-alt).
+members-one-per-ip: false
+
+ranks:
+  1:
+    leader: ['eco give %player% 10000']
+    members: ['eco give %player% 2000']
+    mvp: ['give %player% diamond 16', 'broadcast MVP %player% (%player_time%)']
+  2:
+    leader: ['eco give %player% 5000']
+    members: ['eco give %player% 1000']
+    mvp: ['give %player% diamond 8']
+  3:
+    leader: ['eco give %player% 2500']
+    members: ['eco give %player% 500']
+    mvp: ['give %player% diamond 4']

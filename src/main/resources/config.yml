@@ -1,0 +1,142 @@
+# ClanKoth configuration
+#
+# Thời lượng trận tính theo GIỜ THẬT: TPS tụt thì trận 5 phút vẫn kết thúc sau đúng 5 phút.
+# Thời gian chiếm của mỗi clan đếm theo tick server (20 tick = 1 giây): khi lag mọi clan chậm như nhau,
+# nên bảng xếp hạng vẫn công bằng.
+#
+# Only '/koth reload' is supported. Do NOT use Bukkit's /reload.
+
+# Log controller changes, eligibility decisions and ranking results to the console.
+debug: false
+
+# Default session length when neither the command, the schedule nor the zone sets one.
+default-duration-seconds: 300
+
+# How a new controller is chosen when the current one loses control while others are inside:
+#   RANDOM          - uniform random eligible player inside
+#   LONGEST_INSIDE  - the eligible player who has been inside the longest
+selection-mode: RANDOM
+
+# false: players riding a vehicle or mob can never be controller.
+allow-vehicles: false
+
+# Where the controller-change message is shown to players near the zone: CHAT | ACTIONBAR | NONE
+controller-change-display: CHAT
+
+# Người đang chiếm vùng phát sáng (viền trắng). Bật ngay khi bắt đầu chiếm,
+# tắt ngay khi không còn chiếm (ra khỏi vùng, chết, thoát game, hết trận).
+controller-glow: true
+
+
+# Title shown to every online player when a session starts (text in messages.yml: title-start /
+# subtitle-start). Total on screen = fade-in + stay + fade-out = 140 ticks = 7 seconds.
+start-title:
+  enabled: true
+  fade-in-ticks: 10
+  stay-ticks: 120
+  fade-out-ticks: 10
+
+# Played every time someone takes control of a zone, to everyone near that zone (the same area that shows
+# the KOTH scoreboard: scoreboard.arena-radius). A new capture before it finishes simply plays on top.
+# sound: '' disables it. volume 0-10, pitch 0.5-2.
+capture-sound:
+  sound: 'entity.ender_dragon.growl'
+  volume: 1.0
+  pitch: 1.0
+
+# Max upcoming starts listed by the player command /koth (and /koth time).
+player-schedule-limit: 5
+
+scoreboard:
+  # Distance (blocks) from the zone's edge within which %clankoth_near% is true.
+  arena-radius: 30
+  # Extra distance before 'near' turns off again (prevents flickering at the edge).
+  hysteresis: 3
+  check-interval-ticks: 10
+
+hologram:
+  offset-y: 2.0
+  # Refresh interval for IDLE holograms (minimum 20). Holograms of running sessions always update once per
+  # second, in the same tick as the placeholder data, so hologram and scoreboard stay in sync.
+  update-interval-ticks: 20
+  # Tokens: %zone% %active% %controller% %controller_clan% %time_left% %top_<1-5>_clan% %top_<1-5>_time%
+  #         %next% %next_in%
+  # Other PlaceholderAPI placeholders are resolved without a player.
+  #
+  # Mỗi vùng có 2 holo riêng:
+  #   - ranking (bảng xếp hạng). Di chuyển: /koth holo <movehere|reset> <vùng>
+  #   - info (chưa diễn ra / trận kế tiếp), tự ẩn khi KOTH đang diễn ra.
+  #     Di chuyển: /koth infoholo <movehere|reset> <vùng>
+  # Cả 2 mặc định cùng nằm giữa vùng, nên hãy movehere 1 trong 2 để không bị đè lên nhau.
+  # Để 'lines: []' thì holo đó không bao giờ hiện.
+  ranking:
+    # true = bảng xếp hạng vẫn hiện khi chưa diễn ra (các hạng hiện dòng trống bên dưới). false = ẩn.
+    show-when-idle: true
+    # Dùng cả khi chưa diễn ra lẫn khi đang diễn ra.
+    lines:
+      - '&c&lBảng Xếp Hạng'
+      - ''
+      - '&c#1 &f%top_1_clan% &fđã chiếm &b%top_1_time%'
+      - '&e#2 &f%top_2_clan% &fđã chiếm &b%top_2_time%'
+      - '&a#3 &f%top_3_clan% &fđã chiếm &b%top_3_time%'
+      - '&7#4 &f%top_4_clan% &fđã chiếm &b%top_4_time%'
+      - '&7#5 &f%top_5_clan% &fđã chiếm &b%top_5_time%'
+    # Dòng chứa %top_<hạng>_...% sẽ được thay bằng dòng này khi hạng đó chưa có clan (luôn như vậy khi chưa diễn ra).
+    empty-rows:
+      1: '&c#1 &f--- &7- &b--:--'
+      2: '&e#2 &f--- &7- &b--:--'
+      3: '&a#3 &f--- &7- &b--:--'
+      4: '&7#4 &f--- &7- &b--:--'
+      5: '&7#5 &f--- &7- &b--:--'
+  info:
+    # Chỉ hiện khi vùng chưa diễn ra KOTH.
+    lines:
+      - '<gradient:#FA912E:#EFF665>&lBANG HỘI CHIẾN</gradient>'
+      - ''
+      - '&7Trạng thái: &cChưa diễn ra'
+      - '&7Trận kế tiếp: &e%next%'
+      - '&7Còn: &b%next_in%'
+
+# ===== MỚI =====
+# Bossbar cho toàn server khi KOTH đang diễn ra (mỗi vùng đang chạy 1 thanh, thanh ngắn dần theo thời gian).
+# Token giống hologram: %time_left% %top_1_clan% %zone% ...
+bossbar:
+  enabled: true
+  title: '<#FA912E>&lB<#F99932>&la<#F8A136>&ln<#F7A83B>&lg <#F6B843>&lH<#F5C047>&lộ<#F4C74C>&li <#F2D754>&lC<#F2DF58>&lh<#F1E65D>&li<#F0EE61>&lế<#EFF665>&ln &7- &fCòn lại: &a%time_left% &8| &c#1 &f%top_1_clan%'
+  # PINK | BLUE | RED | GREEN | YELLOW | PURPLE | WHITE
+  color: YELLOW
+  # PROGRESS | NOTCHED_6 | NOTCHED_10 | NOTCHED_12 | NOTCHED_20
+  overlay: PROGRESS
+
+empty:
+  controller: '&7Không có ai'
+  top: '---'
+  time: '--:--'
+  next: 'Chưa lên lịch'
+
+scheduler:
+  enabled: true
+  timezone: 'Asia/Ho_Chi_Minh'
+  reminder:
+    enabled: true
+    start-before-seconds: 1800   # bắt đầu nhắc từ 30 phút trước
+    interval-seconds: 300        # nhắc lại mỗi 5 phút
+  announce-before-seconds: [60, 10]
+  schedules:
+    - zone: test
+      times: ['12:00:00', '19:03:00']
+      days: [ALL]
+
+# ===== MỚI =====
+# Khoá bang hội khi CÓ BẤT KỲ KOTH nào đang diễn ra (cần BoxClans bản mới).
+# Người chơi bị chặn sẽ nhận tin 'clan-locked' trong messages.yml.
+# Lệnh admin (/clanadmin disband, /clanadmin kick, /clanadmin setrole...) KHÔNG bị chặn.
+# Người có quyền clankoth.bypass.clanlock cũng không bị chặn (mặc định không ai có, kể cả OP).
+clan-lock:
+  enabled: true
+  # create   - tạo bang            disband - giải tán bang
+  # leave    - rời bang            join    - vào bang (chấp nhận lời mời)
+  # kick     - kick thành viên     invite  - mời người vào bang
+  # transfer - chuyển chủ bang
+  # Xoá cái nào khỏi danh sách thì cái đó KHÔNG bị chặn nữa.
+  actions: [create, disband, leave, join, kick, invite, transfer]
